@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingTop="?android:attr/actionBarSize" >
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            >
+            <EditText
+                android:id="@+id/tinyso_edit_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tinyso_edit_message"
+                android:textColor="#6495ED" />
+            <Button
+                android:id="@+id/doGet"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="GET请求"
+                android:onClick="onClick"
+                android:textColor="#6495ED" />
+            <Button
+                android:id="@+id/doPost"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="POST请求"
+                android:onClick="onClick"
+                android:textColor="#6495ED" />
+            <TextView
+                android:id="@+id/showContent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textColor="#6495ED"
+                />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
