@@ -31,15 +31,41 @@ public class TinySouClient {
             System.exit(0);
         }
     }
-    
+    //----------------------------------------set函数----------------------------------------
     public void setMethod(String method){
     	this.method = method;
+    } 
+    
+    public void setEngine_key(String engine_key){
+    	this.engine_key = engine_key;
     }
     
+    public void setUrl(String url){
+    	this.url = url;
+    }
+    
+    public void setParams_q(String params_q){
+    	this.params_q = params_q;
+    }
+    
+    //----------------------------------------get函数----------------------------------------
     public String getMethod(){
     	return this.method;
     }
+    
+    public String getUrl(){
+    	return this.url;
+    }
+    
+    public String getEngine_key(){
+    	return this.engine_key;
+    }
+    
+    public String getParams_q(){
+    	return this.params_q;
+    }
 
+    //建立url
     public String buildUrl(){
         if(this.method == "get"){
             return this.url + "?q=" + this.params_q;
@@ -48,6 +74,7 @@ public class TinySouClient {
         }
     }
 
+    //生成request
     public HttpHelp buildRequest(){
         final String engine_key = this.engine_key;
         final String SearchContent = this.params_q;
@@ -109,6 +136,7 @@ public class TinySouClient {
         }
     }
 
+    //执行搜索操作
     public String Search(String searchContent){
     	this.params_q = searchContent;
         //this.check_method();
