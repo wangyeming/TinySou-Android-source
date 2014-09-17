@@ -10,27 +10,30 @@ import java.util.List;
 
 public class TinySouClient {
 	//权限验证
-    protected String auth_token = null;
+    //protected String auth_token = null;
+	//engine key
+	public String engine_key = null;
     //HTTP 请求方法 get 或 post
-    protected String method = null;
+    protected String method = "post";
     //HTTP 微搜索url
-    protected String url = null;
+    protected String url = "http://api.tinysou.com/v1/public/search";
     //参数
-    protected List params = new ArrayList();
+    //protected List params = new ArrayList();
     //参数q 待搜索的内容，必需
     protected String params_q = null;
 
-    public TinySouClient(String auth_token, String method, String url, String params_q){
-        this.auth_token = auth_token;
-        this.method = method;
-        this.url = url;
-        this.params_q = params_q;
+    public TinySouClient(String engine_key){
+        this.engine_key = engine_key;
     }
 
     public void check_method(){
         if(this.method != "get" && this.method == "post") {
             System.exit(0);
         }
+    }
+    
+    public void setMethod(String url){
+    	this.url = url;
     }
 
     public String buildUrl(){
@@ -42,7 +45,7 @@ public class TinySouClient {
     }
 
     public HttpHelp buildRequest(){
-        final String AuthToken = this.auth_token;
+        final String engine_key = this.engine_key;
         final String SearchContent = this.params_q;
         if(this.method == "get"){
             HttpHelp get_request = new HttpHelp();
@@ -54,7 +57,6 @@ public class TinySouClient {
                 @Override
                 public void onRequest(HttpHelp request) throws Exception{
                     request.addHeader("Content-Type", "application/json");
-                    request.addHeader("Authorization", AuthToken);
                 }
                 public String onSucceed(int statusCode, HttpHelp request) throws Exception{
                     return request.getInputStreamJson();
@@ -67,21 +69,22 @@ public class TinySouClient {
         }
         else {
             HttpHelp post_request = new HttpHelp();
+            final String engineKey = this.engine_key;
             post_request
                     .setCharset(HTTP.UTF_8)
                     .setConnectedTimeout(5000)
                     .setSoTimeout(10000);
             post_request.setOnHttpRequestListener(new HttpHelp.OnHttpRequestListener() {
-                private String CHARSET = HTTP.UTF_8;
+                private String CHARSET = HTTP.UTF_8;				
                 @Override
                 public void onRequest(HttpHelp request) throws Exception {
                     // 设置发送请求的 header 信息
                     request.addHeader("Content-Type", "application/json");
-                    request.addHeader("Authorization", AuthToken);
-
                     // 配置要 POST 的数据
                     JSONStringer search_content = new JSONStringer().object()
                             .key("q").value(SearchContent);
+                    search_content.key("c").value("page");
+                    search_content.key("engine_key").value(engineKey);
                     search_content.endObject();
                     String body = search_content.toString();
                     StringEntity entity = new StringEntity(body);
@@ -95,24 +98,25 @@ public class TinySouClient {
 
                 @Override
                 public String onFailed(int statusCode, HttpHelp request) throws Exception {
-                    return "GET 请求失败：statusCode "+ statusCode;
+                    return "POST 请求失败：statusCode "+ statusCode;
                 }
             });
             return post_request;
         }
     }
 
-    public String Search(){
+    public String Search(String searchContent){
+    	this.params_q = searchContent;
         //this.check_method();
-        String SearchResult = this.buildUrl();
+        String SearchUrl = this.buildUrl();
         HttpHelp request = this.buildRequest();
         String content = null;
         try {
             if(this.method == "get"){
-                content = request.get(SearchResult);
+                content = request.get(SearchUrl);
             }
             else{
-                content = request.post(SearchResult);
+                content = request.post(SearchUrl);
             }
         } catch (IOException e) {
             content = "IO异常：" + e.getMessage();
