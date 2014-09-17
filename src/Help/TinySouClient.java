@@ -32,8 +32,12 @@ public class TinySouClient {
         }
     }
     
-    public void setMethod(String url){
-    	this.url = url;
+    public void setMethod(String method){
+    	this.method = method;
+    }
+    
+    public String getMethod(){
+    	return this.method;
     }
 
     public String buildUrl(){
