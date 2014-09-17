@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-	private String TinySou_Token = "token fc0e0c3eedab24673c4e";
-    private String TinySou_Url = "http://api.tinysou.com/v1/engines/wym/collections/page/search";
+	private String EngineKey = "0b732cc0ea3c11874190";
+    private String TinySou_Url = "http://api.tinysou.com/v1/public/search";
     //搜索内容
     private String Search_Content = null;
 
@@ -53,8 +53,10 @@ public class MainActivity extends Activity {
                     return;
                 }
                 Search_Content = editText.getText().toString();
-                TinySouClient client = new TinySouClient(TinySou_Token, "post", TinySou_Url, Search_Content);
-                String result = client.Search();
+                //建立微搜索主机
+                TinySouClient client = new TinySouClient(EngineKey);
+                //搜索并返回结果
+                String result = client.Search(Search_Content);
                 Message message = Message.obtain();
                 message.obj = result;
                 handler.sendMessage(message);
