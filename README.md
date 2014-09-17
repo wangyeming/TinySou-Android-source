@@ -2,7 +2,6 @@ TinySou-Android-source
 ======================
 
 TinySou-Anddroid TinySouHelp.jar 源码
--------------------------------------
 
 包含三个class文件，分别为HttpHelp, TinySouHelp, TinySouClient三个自定义类
 
